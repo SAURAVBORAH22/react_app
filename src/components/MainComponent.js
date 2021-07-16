@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
+import About from './AboutComponent';
 import Contact from './ContactComponent';
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
@@ -35,6 +36,14 @@ class Main extends Component {
       );
     }
 
+    const AboutUsPage = () => {
+      return(
+          <About 
+              leaders={this.state.leaders}
+          />
+      );
+  };
+
     const DishWithId = ({ match }) => {
       return (
         //converting the string to base 10 integer
@@ -52,6 +61,8 @@ class Main extends Component {
           <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} />
           <Route path="/menu/:dishId" component={DishWithId} />
           <Route exact path="/contactus" component={Contact} />
+          <Route exact path="/aboutus" component={ AboutUsPage } />
+          /* if url dosesnt match, bydefault redirect to */
           <Redirect to="/home" />
         </Switch>
         <Footer />
