@@ -8,10 +8,10 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
 
 //// validators
 const required = (val) => val && val.length; //value > 0
-const maxLength = (len) => (val) => !(val) || (val.length <= len);
-const minLength = (len) => (val) => (val) &&( val.length >= len);
-const isNumber = (val) => !isNaN(Number(val));
-const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+const maxLength = (len) => (val) => !(val) || (val.length <= len);//ensure the max length(length of value enter is less than equal to the max length)
+const minLength = (len) => (val) => (val) &&( val.length >= len);//checks min length
+const isNumber = (val) => !isNaN(Number(val)); //if the value entered is number or not 
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val); //checks whether the value entered email is a valid email or not within the given characters limit 
 
 
 
@@ -93,10 +93,12 @@ class Contact extends Component{
                                     <Control.text  model=".firstname" id="firstname" name="firstname"
                                         placeholder="First Name"
                                         className="form-control"   
+                                        /* validators for which the first name is valid */
                                         validators={{
                                             required, minLength: minLength(3), maxLength: maxLength(15)
                                         }}                                 
                                     />
+                                    {/* specifying the errors */}
                                     <Errors
                                         className="text-danger"
                                         model=".firstname"
