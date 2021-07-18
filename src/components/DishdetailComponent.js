@@ -6,7 +6,7 @@ import {
 } from "reactstrap";
 
 import { Control, LocalForm, Errors } from 'react-redux-form';
-
+import { Loading } from "./LoadingComponent";
 
 
 // validators
@@ -212,42 +212,62 @@ function RenderComments({ dish, comments, addComment, dishId }) {
 
 
 const DishDetail = (props) => {
-
     const dish = props.dish
+    //if isLoading is true
+    //then we are returning the view as the loading component
+    if (props.isLoading) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if (props.errMess) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
 
-
+    else if (props.dish != null){
+        return (
+            <div className="container">
+                <div className="row">
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/menu">Menu</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            {props.dish.name}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+    
+                    <div className="col-12">
+                        <h3> {props.dish.menu}</h3>
+                        <hr />
+                    </div>
+                </div>
+    
+                <div className='row'>
+                    <RenderDish dish={props.dish} />
+                    <RenderComments dish={props.dish} comments={props.comments}
+                        addComment={props.addComment}
+                        dishId={props.dish.id} />
+                </div>
+    
+    
+            </div>
+        )
+    }
+    
     if (dish == null) {
         return (<div></div>);
     }
-
-    return (
-        <div className="container">
-            <div className="row">
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/menu">Menu</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        {props.dish.name}
-                    </BreadcrumbItem>
-                </Breadcrumb>
-
-                <div className="col-12">
-                    <h3> {props.dish.menu}</h3>
-                    <hr />
-                </div>
-            </div>
-
-            <div className='row'>
-                <RenderDish dish={props.dish} />
-                <RenderComments dish={props.dish} comments={props.comments}
-                    addComment={props.addComment}
-                    dishId={props.dish.id} />
-            </div>
-
-
-        </div>
-    )
 }
 
 
