@@ -3,7 +3,9 @@ import * as ActionTypes from './ActionTypes';
 
 //Dishes Reducer
 import { DISHES } from '../shared/dishes';
-import { actionTypes } from 'react-redux-form';
+
+//for communicating with the server
+import { baseUrl } from '../shared/baseUrl';
 
 // arrow function which creates an action object
 //accepts 4 parameters
@@ -24,12 +26,9 @@ export const fetchDishes = () => (dispatch) => {
 
     dispatch(dishesLoading(true));
 
-    //introduce delay using setTimeout
-    //2000ms delay
-    //after the delay we are dispatching the DISHES
-    setTimeout(() => {
-        dispatch(addDishes(DISHES));
-    }, 2000);
+    return fetch(baseUrl + 'dishes')
+        .then(response => response.json())
+        .then(dishes => dispatch(addDishes(dishes)));
 }
 
 //function dishesLoading which returns an action
@@ -53,4 +52,57 @@ export const dishesFailed = (errmess) => ({
 export const addDishes = (dishes) => ({
     type: ActionTypes.ADD_DISHES,
     payload: dishes
+});
+
+
+//setting up fetch comments
+export const fetchComments = () => (dispatch) => {    
+    return fetch(baseUrl + 'comments')
+    .then(response => response.json())
+    .then(comments => dispatch(addComments(comments)));
+};
+
+
+//comments failed
+export const commentsFailed = (errmess) => ({
+    type: ActionTypes.COMMENTS_FAILED,
+    payload: errmess
+});
+
+
+//adding comments
+export const addComments = (comments) => ({
+    type: ActionTypes.ADD_COMMENTS,
+    payload: comments
+});
+
+
+
+//setting up fetch promotions
+export const fetchPromos = () => (dispatch) => {
+    
+    dispatch(promosLoading());
+
+    return fetch(baseUrl + 'promotions')
+    .then(response => response.json())
+    .then(promos => dispatch(addPromos(promos)));
+}
+
+//promotions loading
+export const promosLoading = () => ({
+    type: ActionTypes.PROMOS_LOADING
+});
+
+
+//promotions failed
+export const promosFailed = (errmess) => ({
+    type: ActionTypes.PROMOS_FAILED,
+    payload: errmess
+});
+
+
+//adding promitions
+export const addPromos = (promos) => ({
+    type: ActionTypes.ADD_PROMOS,
+    payload: promos
 });
