@@ -13,6 +13,8 @@ import { connect } from 'react-redux';
 //importing redux action creator
 import { addComment, fetchDishes } from '../redux/ActionCreators';
 
+import { actions } from 'react-redux-form';
+
 
 const mapStateToProps = state => {
 
@@ -27,7 +29,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch) => ({
   //passing 4 parameter value to addComment and dispatching it 
   addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
-  fetchDishes: () => { dispatch(fetchDishes())}
+  fetchDishes: () => { dispatch(fetchDishes())},
+  //adding necessary actions for resetting feeback
+  resetFeedbackForm: () => {dispatch(actions.reset('feeback'))}
 });
 
 
@@ -88,7 +92,7 @@ class Main extends Component {
 
           <Route path="/menu/:dishId" component={DishWithId} />
 
-          <Route exact path="/contactus" component={Contact} />
+          <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} /> } />
           <Route exact path="/aboutus" component={AboutUsPage} />
 
           {/* if url dosesnt match, bydefault redirect to */}

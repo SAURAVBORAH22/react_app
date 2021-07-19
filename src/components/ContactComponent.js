@@ -1,37 +1,39 @@
-import React, {Component} from 'react';
-import { Breadcrumb, BreadcrumbItem, Button, 
-     Label,  Col, Row } from 'reactstrap';
+import React, { Component } from 'react';
+import {
+    Breadcrumb, BreadcrumbItem, Button,
+    Label, Col, Row
+} from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Control, Form, Errors, actions } from 'react-redux-form';
 
 
 //// validators
 const required = (val) => val && val.length; //value > 0
 const maxLength = (len) => (val) => !(val) || (val.length <= len);//ensure the max length(length of value enter is less than equal to the max length)
-const minLength = (len) => (val) => (val) &&( val.length >= len);//checks min length
+const minLength = (len) => (val) => (val) && (val.length >= len);//checks min length
 const isNumber = (val) => !isNaN(Number(val)); //if the value entered is number or not 
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val); //checks whether the value entered email is a valid email or not within the given characters limit 
 
 
 
-class Contact extends Component{
+class Contact extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(values){
-        console.log("Current State is: " + JSON.stringify( values ) );
-        alert("Current State is: " + JSON.stringify( values ) );
+    handleSubmit(values) {
+        console.log("Current State is: " + JSON.stringify(values));
+        alert("Current State is: " + JSON.stringify(values));
+        this.props.resetFeedbackForm();
 
-            
     }
 
 
-    render(){
+    render() {
 
         return (
             <div className="container">
@@ -44,13 +46,13 @@ class Contact extends Component{
                             Contact Us
                         </BreadcrumbItem>
                     </Breadcrumb>
-    
+
                     <div className="col-12">
                         <h3>Contact Us</h3>
                         <hr />
                     </div>
                 </div>
-    
+
                 <div className="row row-content">
                     <div className="col-12">
                         <h3>Location Information</h3>
@@ -82,21 +84,21 @@ class Contact extends Component{
                     <div className="col-12">
                         <h3> Send us your feedback</h3>
                     </div>
-                    
+
                     <div className="col-12 col-md-9">
-                        <LocalForm onSubmit={ (values) => this.handleSubmit(values) } >
-                            
+                        <Form model="feedback" onSubmit={(values) => this.handleSubmit(values)} >
+
                             {/* firstname */}
                             <Row className="form-group">
                                 <Label htmlFor="firstName" md={2}>First Name</Label>
                                 <Col md={10}>
-                                    <Control.text  model=".firstname" id="firstname" name="firstname"
+                                    <Control.text model=".firstname" id="firstname" name="firstname"
                                         placeholder="First Name"
-                                        className="form-control"   
+                                        className="form-control"
                                         /* validators for which the first name is valid */
                                         validators={{
                                             required, minLength: minLength(3), maxLength: maxLength(15)
-                                        }}                                 
+                                        }}
                                     />
                                     {/* specifying the errors */}
                                     <Errors
@@ -186,10 +188,10 @@ class Contact extends Component{
 
                             {/* checkbox may we contact you */}
                             <Row className="form-group">
-                                <Col md={{size: 6, offset: 2}}>
+                                <Col md={{ size: 6, offset: 2 }}>
                                     <div className="form-check">
                                         <Label check>
-                                            <Control.checkbox model=".agree"  name="agree"
+                                            <Control.checkbox model=".agree" name="agree"
                                                 className="form-check-input"
                                             />{' '}
                                             <strong>May we contact you? </strong>
@@ -198,7 +200,7 @@ class Contact extends Component{
                                 </Col>
 
                                 <Col md={{ size: 3, offset: 1 }}>
-                                    <Control.select model=".contactType"  
+                                    <Control.select model=".contactType"
                                         className="form-control"
                                         name="contactType"
                                     >
@@ -212,7 +214,7 @@ class Contact extends Component{
                             <Row className="form-group">
                                 <Label htmlFor="message" md={2}>Your Feedback</Label>
                                 <Col md={10}>
-                                    <Control.textarea model=".message"  id="message" name="message"
+                                    <Control.textarea model=".message" id="message" name="message"
                                         rows="12"
                                         className="form-control"
                                     />
@@ -221,20 +223,20 @@ class Contact extends Component{
 
                             {/* submit button */}
                             <Row className="form-group">
-                                <Col md={{size: 10, offset: 2}}>
+                                <Col md={{ size: 10, offset: 2 }}>
                                     <Button type="submit" color="primary">
                                         Send Feedback
                                     </Button>
                                 </Col>
                             </Row>
 
-                        </LocalForm>
+                        </Form>
                     </div>
 
                 </div>
             </div>
         );
-        
+
     }
 }
 
