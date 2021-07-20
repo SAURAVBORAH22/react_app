@@ -18,8 +18,10 @@ export const Comments = (state = {
 
         case ActionTypes.ADD_COMMENT:
             var comment = action.payload;
-            comment.id = state.comments.length;//because comment is a js array .. length of array tells the no of comments
-            comment.date = new Date().toISOString();//converting date to string
+            //comment.id = state.comments.length;//because comment is a js array .. length of array tells the no of comments
+            //comment.date = new Date().toISOString();//converting date to string
+            
+            //adding comment to the redux store
             return { ...state, comments: state.comments.concat(comment) };//pushes the new element into the array // concat is a immutable object
         default:
             return state;//return state unmodified

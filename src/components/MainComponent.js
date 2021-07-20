@@ -12,7 +12,7 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 //importing redux action creator
-import { addComment, fetchComments, fetchDishes, fetchPromos } from '../redux/ActionCreators';
+import { postComment, fetchComments, fetchDishes, fetchPromos } from '../redux/ActionCreators';
 
 import { actions } from 'react-redux-form';
 
@@ -27,9 +27,10 @@ const mapStateToProps = state => {
   }
 }
 
+//method definition
 const mapDispatchToProps = (dispatch) => ({
   //passing 4 parameter value to addComment and dispatching it 
-  addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
+  postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
   fetchDishes: () => { dispatch(fetchDishes())},
   //adding necessary actions for resetting feeback
   resetFeedbackForm: () => {dispatch(actions.reset('feeback'))},
@@ -83,7 +84,7 @@ class Main extends Component {
             errMess={this.props.dishes.errMess}
             comments={this.props.comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
             commentsErrMess={this.props.comments.errMess}
-            addComment={this.props.addComment}
+            postComment={this.props.postComment}
           />
       );
     };

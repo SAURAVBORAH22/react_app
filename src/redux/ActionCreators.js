@@ -10,16 +10,67 @@ import { baseUrl } from '../shared/baseUrl';
 // arrow function which creates an action object
 //accepts 4 parameters
 //standarized way to define a action type
-export const addComment = (dishId, rating, author, comment) => ({
+export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
     //payload contain whatever data need to be carries in the action object 
-    payload: {
+    payload: comment
+});
+
+//adding a action creator called post Comment
+//add comment will be used by post comment to push the comment to the redux store
+//sending function of function because this is a thunk
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+
+    const newComment = {
         dishId: dishId,
         rating: rating,
         author: author,
         comment: comment
     }
-});
+    newComment.date = new Date().toISOString();
+
+    //posting the comment to the server
+    //this is going to be a post operation
+    return fetch(baseUrl + 'comments', {
+        method: 'POST',//this operation is a post operation
+        body: JSON.stringify(newComment), //taking the javascript object newComment and converting it into json and putting it in the body
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+        //handling the response
+        //promise handler
+        //if response from the server was ok we are returning the response
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            //if we encounter error
+            //then we are taking the error code and joining it to a message to show error
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            //error handler
+            error => {
+                //error.message will contain information about what the error is about
+                //with the help of it we are creating an error object 
+                //and then throwing the error
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+        .then(response => response.json())
+        .then(response => dispatch(addComment(response)))
+
+        //catching the error
+        .catch(error => {
+            console.log('Post comments', error.message)
+            alert('Your comment could not be posted\nError: ' + error.message)
+        })
+}
 
 //function which returns a thunk which when called tries to fetch the datails
 export const fetchDishes = () => (dispatch) => {
