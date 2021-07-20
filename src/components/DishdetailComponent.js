@@ -217,25 +217,25 @@ const DishDetail = (props) => {
     //if isLoading is true
     //then we are returning the view as the loading component
     if (props.isLoading) {
-        return(
+        return (
             <div className="container">
-                <div className="row">            
+                <div className="row">
                     <Loading />
                 </div>
             </div>
         );
     }
     else if (props.errMess) {
-        return(
+        return (
             <div className="container">
-                <div className="row">            
+                <div className="row">
                     <h4>{props.errMess}</h4>
                 </div>
             </div>
         );
     }
 
-    else if (props.dish != null){
+    else if (props.dish != null) {
         return (
             <div className="container">
                 <div className="row">
@@ -247,25 +247,25 @@ const DishDetail = (props) => {
                             {props.dish.name}
                         </BreadcrumbItem>
                     </Breadcrumb>
-    
+
                     <div className="col-12">
                         <h3> {props.dish.menu}</h3>
                         <hr />
                     </div>
                 </div>
-    
+
                 <div className='row'>
                     <RenderDish dish={props.dish} />
                     <RenderComments dish={props.dish} comments={props.comments}
                         postComment={props.postComment}
                         dishId={props.dish.id} />
                 </div>
-    
-    
+
+
             </div>
         )
     }
-    
+
     if (dish == null) {
         return (<div></div>);
     }
