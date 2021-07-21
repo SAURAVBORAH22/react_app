@@ -5,15 +5,15 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-import { Control, Form, Errors, actions } from 'react-redux-form';
+import { Control, LocalForm, Form, Errors, actions } from 'react-redux-form';
 
 
 //// validators
 const required = (val) => val && val.length; //value > 0
-const maxLength = (len) => (val) => !(val) || (val.length <= len);//ensure the max length(length of value enter is less than equal to the max length)
-const minLength = (len) => (val) => (val) && (val.length >= len);//checks min length
-const isNumber = (val) => !isNaN(Number(val)); //if the value entered is number or not 
-const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val); //checks whether the value entered email is a valid email or not within the given characters limit 
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => (val) && (val.length >= len);
+const isNumber = (val) => !isNaN(Number(val));
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 
 
@@ -26,9 +26,14 @@ class Contact extends Component {
     }
 
     handleSubmit(values) {
-        console.log("Current State is: " + JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
+        // console.log("Current State is: " + JSON.stringify( values ) );
+        // alert("Current State is: " + JSON.stringify( values ) );
+
+
+        this.props.postFeedback(values.firstname, values.lastname, values.telnum, values.email, values.agree, values.contactType, values.message);
         this.props.resetFeedbackForm();
+
+
 
     }
 
@@ -86,7 +91,7 @@ class Contact extends Component {
                     </div>
 
                     <div className="col-12 col-md-9">
-                        <Form model="feedback" onSubmit={(values) => this.handleSubmit(values)} >
+                        <Form model="feedback" onSubmit={(values) => this.handleSubmit(values)} resetOnSubmit={true}>
 
                             {/* firstname */}
                             <Row className="form-group">
@@ -95,12 +100,10 @@ class Contact extends Component {
                                     <Control.text model=".firstname" id="firstname" name="firstname"
                                         placeholder="First Name"
                                         className="form-control"
-                                        /* validators for which the first name is valid */
                                         validators={{
                                             required, minLength: minLength(3), maxLength: maxLength(15)
                                         }}
                                     />
-                                    {/* specifying the errors */}
                                     <Errors
                                         className="text-danger"
                                         model=".firstname"
@@ -186,7 +189,7 @@ class Contact extends Component {
                                 </Col>
                             </Row>
 
-                            {/* checkbox may we contact you */}
+                            {/* ? */}
                             <Row className="form-group">
                                 <Col md={{ size: 6, offset: 2 }}>
                                     <div className="form-check">
